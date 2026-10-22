@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-labelledby="title desc">
+  <title id="title">SRDA Labs mark</title>
+  <desc id="desc">Four crimson letters arranged around a fading X.</desc>
+  <defs>
+    <linearGradient id="diag-a" x1="12" y1="12" x2="88" y2="88" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#e85c5f" stop-opacity="0" />
+      <stop offset=".24" stop-color="#e85c5f" stop-opacity=".9" />
+      <stop offset=".5" stop-color="#f47b71" />
+      <stop offset=".76" stop-color="#e85c5f" stop-opacity=".9" />
+      <stop offset="1" stop-color="#e85c5f" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="diag-b" x1="88" y1="12" x2="12" y2="88" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#e85c5f" stop-opacity="0" />
+      <stop offset=".24" stop-color="#e85c5f" stop-opacity=".9" />
+      <stop offset=".5" stop-color="#f47b71" />
+      <stop offset=".76" stop-color="#e85c5f" stop-opacity=".9" />
+      <stop offset="1" stop-color="#e85c5f" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+  <g fill="none" stroke-linecap="round" stroke-width="2.2">
+    <line x1="13" y1="13" x2="87" y2="87" stroke="url(#diag-a)" />
+    <line x1="87" y1="13" x2="13" y2="87" stroke="url(#diag-b)" />
+  </g>
+  <g fill="#f1f0ec" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" font-weight="600" text-anchor="middle">
+    <text x="50" y="29">S</text>
+    <text x="73" y="55">R</text>
+    <text x="50" y="81">D</text>
+    <text x="27" y="55">A</text>
+  </g>
+</svg>
