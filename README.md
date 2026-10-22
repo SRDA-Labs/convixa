@@ -10,14 +10,10 @@
 
 **Self-hosted inventory and governance for [Safe](https://safe.global) multisigs.**
 
-Teams, RBAC, alerts, pre-sign checklists and SEAL-aligned security workflows —<br>
+Teams, RBAC, alerts, pre-sign checklists and SEAL-aligned security workflows —
 running on your own infrastructure.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-e85c5f.svg?style=flat-square)](LICENSE)
-[![Next.js 15](https://img.shields.io/badge/Next.js-15-292c31.svg?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-292c31.svg?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Drizzle-292c31.svg?style=flat-square&logo=postgresql&logoColor=white)](https://orm.drizzle.team)
-[![Built by SRDA Labs](https://img.shields.io/badge/built%20by-SRDA%20Labs-e85c5f.svg?style=flat-square)](https://github.com/SRDA-Labs)
+[![License: MIT](https://img.shields.io/badge/License-MIT-e85c5f.svg?style=flat-square)](LICENSE) [![Next.js 15](https://img.shields.io/badge/Next.js-15-292c31.svg?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org) [![TypeScript](https://img.shields.io/badge/TypeScript-5-292c31.svg?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org) [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Drizzle-292c31.svg?style=flat-square&logo=postgresql&logoColor=white)](https://orm.drizzle.team) [![Built by SRDA Labs](https://img.shields.io/badge/built%20by-SRDA%20Labs-e85c5f.svg?style=flat-square)](https://github.com/SRDA-Labs)
 
 [Quick start](#quick-start) · [Features](#features) · [Alerting](#alerting) · [Deployment](docs/DEPLOYMENT.md) · [SEAL compliance](docs/SEAL_COMPLIANCE.md)
 
@@ -258,10 +254,10 @@ MIT License — Copyright (c) 2026 SRDA Labs (Security Research and Defence Advi
   <img src="docs/assets/srda-logo-light.svg" alt="SRDA Labs" width="48">
 </picture>
 
-**Built and maintained by [SRDA Labs](https://github.com/SRDA-Labs)**<br>
+**Built and maintained by [SRDA Labs](https://github.com/SRDA-Labs)**
 <sub>Security Research and Defence Advisory</sub>
 
-SRDA does not hold client key material or operate production systems on a client's behalf —<br>
+SRDA does not hold client key material or operate production systems on a client's behalf —
 and neither does Convixa: it never custodies keys and never executes transactions.
 
 [Issues](https://github.com/SRDA-Labs/convixa/issues) · [hello@srdalabs.com](mailto:hello@srdalabs.com)
