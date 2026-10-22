@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-labelledby="title desc">
   <title id="title">SRDA Labs mark</title>
-  <desc id="desc">Four dark letters arranged around a fading crimson X, for light backgrounds.</desc>
+  <desc id="desc">Four black letters arranged around a fading crimson X on an off-white field.</desc>
   <defs>
     <linearGradient id="diag-a" x1="12" y1="12" x2="88" y2="88" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#e85c5f" stop-opacity="0" />
@@ -17,11 +17,12 @@
       <stop offset="1" stop-color="#e85c5f" stop-opacity="0" />
     </linearGradient>
   </defs>
+  <rect x="0" y="0" width="100" height="100" rx="16" fill="#f1f0ec" />
   <g fill="none" stroke-linecap="round" stroke-width="2.2">
     <line x1="13" y1="13" x2="87" y2="87" stroke="url(#diag-a)" />
     <line x1="87" y1="13" x2="13" y2="87" stroke="url(#diag-b)" />
   </g>
-  <g fill="#292c31" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" font-weight="600" text-anchor="middle">
+  <g fill="#101215" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" font-weight="600" text-anchor="middle">
     <text x="50" y="29">S</text>
     <text x="73" y="55">R</text>
     <text x="50" y="81">D</text>

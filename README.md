@@ -1,10 +1,6 @@
 <div align="center">
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/srda-logo-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="docs/assets/srda-logo-light.svg">
-  <img src="docs/assets/srda-logo-light.svg" alt="SRDA Labs" width="86">
-</picture>
+<img src="docs/assets/srda-logo-light.svg" alt="SRDA Labs" width="86">
 
 # Convixa
 
@@ -248,11 +244,7 @@ MIT License — Copyright (c) 2026 SRDA Labs (Security Research and Defence Advi
 
 <div align="center">
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/srda-logo-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="docs/assets/srda-logo-light.svg">
-  <img src="docs/assets/srda-logo-light.svg" alt="SRDA Labs" width="48">
-</picture>
+<img src="docs/assets/srda-logo-light.svg" alt="SRDA Labs" width="48">
 
 **Built and maintained by [SRDA Labs](https://github.com/SRDA-Labs)**
 <sub>Security Research and Defence Advisory</sub>
