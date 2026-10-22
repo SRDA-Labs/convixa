@@ -1,0 +1,21 @@
+{
+  "step": "baseline",
+  "timestamp": "2026-08-06T02:46:19Z",
+  "seconds": {
+    "install": 1,
+    "lint": 4,
+    "build": 36,
+    "test": 0,
+    "total": 41
+  },
+  "flags": {
+    "demo_work_secs": 0,
+    "skip_web_lint": 0,
+    "skip_web_build": 0,
+    "change_detection": false,
+    "incremental": false,
+    "parallel": false,
+    "dep_cache": false,
+    "artifact_cache": false
+  }
+}

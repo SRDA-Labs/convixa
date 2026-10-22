@@ -1,0 +1,115 @@
+# Full stack mode: Run everything in Docker (PostgreSQL + Application)
+
+services:
+  # PostgreSQL database
+  postgres:
+    image: postgres:16-alpine
+    container_name: convixa-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: convixa
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: convixa
+    # Host port: set POSTGRES_PUBLISH_PORT in .env if 5432 is already taken (e.g. local Postgres or docker:dev)
+    ports:
+      - "${POSTGRES_PUBLISH_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U convixa"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Next.js application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      # NEXT_PUBLIC_* are inlined at build time — runtime env alone is not enough for the client bundle.
+      args:
+        NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: ${NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID:-}
+        NEXT_PUBLIC_APP_BASE_URL: ${NEXT_PUBLIC_APP_BASE_URL:-}
+        NEXT_PUBLIC_LEDGER_DAPP_IDENTIFIER: ${NEXT_PUBLIC_LEDGER_DAPP_IDENTIFIER:-}
+        NEXT_PUBLIC_LEDGER_WALLET_PROVIDER_API_KEY: ${NEXT_PUBLIC_LEDGER_WALLET_PROVIDER_API_KEY:-}
+    container_name: convixa-app
+    restart: unless-stopped
+    # Published for local full-stack access (http://localhost:3000).
+    # Production blue-green deploy.sh routes via Caddy instead.
+    ports:
+      - "3000:3000"
+    environment:
+      # Database connection (connects to postgres service)
+      DATABASE_URL: postgresql://convixa:${POSTGRES_PASSWORD}@postgres:5432/convixa
+
+      # NextAuth configuration
+      NEXTAUTH_URL: ${NEXTAUTH_URL:-https://convixa.xyz}
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-please-change-this-to-a-secure-random-string-at-least-32-characters}
+
+      # Optional: App URL for redirects
+      APP_URL: ${APP_URL:-https://convixa.xyz}
+
+      # Optional: Google OAuth
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+
+      # Optional: WalletConnect
+      NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: ${NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID:-}
+
+      # Optional: Ledger Wallet Provider (baked at build for NEXT_PUBLIC_*)
+      NEXT_PUBLIC_LEDGER_DAPP_IDENTIFIER: ${NEXT_PUBLIC_LEDGER_DAPP_IDENTIFIER:-}
+      NEXT_PUBLIC_LEDGER_WALLET_PROVIDER_API_KEY: ${NEXT_PUBLIC_LEDGER_WALLET_PROVIDER_API_KEY:-}
+
+      # Optional: Safe Transaction Service API key (strongly recommended — avoids 429s on inventory txs)
+      SAFE_API_KEY: ${SAFE_API_KEY:-}
+
+      # Optional: Resend API for emails
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+      EMAIL_FROM: ${EMAIL_FROM:-Convixa <onboarding@resend.dev>}
+
+      # Optional: Admin seed credentials
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-}
+
+      NODE_ENV: production
+    depends_on:
+      postgres:
+        condition: service_healthy
+    # Run migrations before starting the app
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        echo "Waiting for database to be ready..."
+        sleep 5
+        echo "Running database migrations..."
+        npx drizzle-kit migrate
+        echo "Starting application..."
+        exec node server.js
+
+  # Caddy reverse proxy — automatic HTTPS via Let's Encrypt
+  caddy:
+    image: caddy:2-alpine
+    container_name: convixa-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - app
+
+volumes:
+  postgres_data:
+    driver: local
+  caddy_data:
+    driver: local
+  caddy_config:
+    driver: local
+
+networks:
+  default:
+    name: convixa-network

@@ -1,0 +1,30 @@
+# Development mode: Run only external services in Docker
+# Use this when you want to run the app manually with `npm run dev` for faster debugging
+
+services:
+  # PostgreSQL database for development
+  postgres:
+    image: postgres:16-alpine
+    container_name: convixa-postgres-dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: convixa
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-convixa_password}
+      POSTGRES_DB: convixa
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U convixa"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_dev_data:
+    driver: local
+
+networks:
+  default:
+    name: convixa-dev-network

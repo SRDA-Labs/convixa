@@ -1,0 +1,43 @@
+name: CI Playground (Baseline)
+
+# Intentionally unoptimized baseline for DevSecOps learning.
+# Later steps: you add change detection, caching, parallelism, security scans.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-playground-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Single monolithic job — no parallelism, no caches, no filters.
+  baseline:
+    name: Baseline (all packages, sequential)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          # NOTE: intentionally NO cache: 'npm' here — that is Optimization #4
+
+      - name: Install + lint + build + test (baseline)
+        env:
+          SKIP_WEB_BUILD: ${{ vars.CI_PLAYGROUND_SKIP_WEB_BUILD || '0' }}
+          SKIP_WEB_LINT: ${{ vars.CI_PLAYGROUND_SKIP_WEB_LINT || '0' }}
+          CI_STEP_NAME: baseline
+        run: bash scripts/ci/run-baseline.sh
+
+      - name: Upload benchmark artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-benchmark-baseline
+          path: docs/ci-playground/benchmarks/baseline.json
+          if-no-files-found: warn

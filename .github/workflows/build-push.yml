@@ -1,0 +1,61 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main
+  # Allow manual trigger from GitHub Actions UI
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  # Image name: ghcr.io/<owner>/<repo>-app
+  IMAGE_NAME: ${{ github.repository_owner }}/convixa-app
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    # Permissions for GITHUB_TOKEN (auto-generated, no PAT needed)
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata for tags
+        id: meta
+        run: |
+          SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+          echo "short_sha=${SHORT_SHA}" >> "$GITHUB_OUTPUT"
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          # Push directly to registry (skip local load)
+          push: true
+          platforms: linux/amd64
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:git-${{ steps.meta.outputs.short_sha }}
+          # Build-time env vars for Next.js (NEXT_PUBLIC_* get inlined into client JS)
+          build-args: |
+            NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=${{ vars.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || secrets.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '' }}
+            NEXT_PUBLIC_APP_BASE_URL=https://convixa.xyz
+            NEXT_PUBLIC_APP_VERSION=${{ steps.meta.outputs.short_sha }}
+            NEXT_PUBLIC_CHAIN=${{ vars.NEXT_PUBLIC_CHAIN || '1' }}
+          # Layer caching via GitHub Actions cache (persists between workflow runs)
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

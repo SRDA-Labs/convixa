@@ -1,0 +1,3 @@
+convixa.xyz {
+    reverse_proxy convixa-app-green:3000
+}
